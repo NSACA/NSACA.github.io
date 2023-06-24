@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon" type="image/x-icon" href="favicons/1113546616398426132-logo.png">
+  <title>NSA - Norwich Space Agency</title>
+  <style>
+    @font-face {
+      font-family: 'ModernFont';
+      src: url('path/to/modern-font.woff2') format('woff2'),
+           url('path/to/modern-font.woff') format('woff');
+      /* Add additional font formats if needed */
+    }
+    
+    body {
+      margin: 0;
+      padding: 20px;
+      overflow: hidden;
+      background-color: black;
+      font-family: 'ModernFont', sans-serif;
+    }
+    
+    .navbar {
+      background-color: transparent;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .navbar li {
+      margin-right: 20px;
+    }
+    
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 23.4px;
+      position: relative;
+      transition: 0.4s;
+    }
+    
+    .navbar a::after {
+      content: "";
+      position: absolute;
+      bottom: -6.5px;
+      left: 0;
+      width: 100%;
+      height: 3.2px;
+      background-color: silver;
+      transform: scaleX(0);
+      transition: transform 0.4s;
+      transform-origin: left;
+    }
+    
+    .navbar a:hover {
+      color: silver;
+    }
+    
+    .navbar a:hover::after {
+      transform: scaleX(1);
+    }
+    
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    
+    #title {
+      text-align: center;
+      font-size: 62.4px;
+      padding-top: 130px;
+      color: white;
+      margin-bottom: 39px;
+    }
+    
+    #counters {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 31.2px;
+      color: white;
+      margin-bottom: 39px;
+    }
+    
+    .counter {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 26px;
+    }
+    
+    .counter > div {
+      margin-top: 13px;
+    }
+    
+    #about {
+      text-align: center;
+      font-size: 18.2px;
+      color: white;
+      margin-bottom: 39px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="jobs.html">Join Us</a></li>
+    </ul>
+  </div>
+  <canvas id="space"></canvas>
+  <div id="title">
+    NSA - Norwich Space Agency
+  </div>
+  <div id="counters">
+    <div class="counter">
+      <div>Staff</div>
+      <div id="staff-counter">9</div>
+    </div>
+    <div class="counter">
+      <div>Visitors</div>
+      <div id="visitor-counter">10.5K</div>
+    </div>
+  </div>
+  <div id="about">
+    NSA &copy; 2023. All rights reserved
+  </div>
+
+  <script>
+    // JavaScript code for interactive stars
+    var canvas = document.getElementById("space");
+    var ctx = canvas.getContext("2d");
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    var stars = [];
+
+    function Star(x, y, radius, color) {
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.color = color;
+      this.velocity = {
+        x: (Math.random() - 0.5) * 2,
+        y: 3
+      };
+    }
+
+    Star.prototype.draw = function () {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.closePath();
+    };
+
+    Star.prototype.update = function () {
+      this.draw();
+      this.x += this.velocity.x;
+      this.y += this.velocity.y;
+      if (this.y + this.radius > height) {
+        this.y = Math.random() * -height;
+      }
+    };
+
+    function createStars() {
+      for (var i = 0; i < 200; i++) {
+        var x = Math.random() * width;
+        var y = Math.random() * height;
+        var radius = Math.random() * 3;
+        var color = "rgba(255, 255, 255, " + Math.random() + ")";
+        stars.push(new Star(x, y, radius, color));
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, width, height);
+      for (var i = 0; i < stars.length; i++) {
+        stars[i].update();
+      }
+    }
+
+    createStars();
+    animate();
+  </script>
+</body>
+</html>
